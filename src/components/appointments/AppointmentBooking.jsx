@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
     Box,
@@ -16,11 +16,7 @@ const AppointmentBooking = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        fetchService();
-    }, [fetchService]);
-
-    const fetchService = async () => {
+    const fetchService = useCallback(async () => {
         if (!serviceId) return;
         try {
             const response = await services.getById(parseInt(serviceId));
@@ -30,10 +26,13 @@ const AppointmentBooking = () => {
             setError(err.message);
             setLoading(false);
         }
-    };
+    }, [serviceId]);
+
+    useEffect(() => {
+        fetchService();
+    }, [fetchService]);
 
     const handleAppointmentBooked = () => {
-        // Navigate to appointments list after successful booking
         navigate('/appointments');
     };
 
@@ -52,6 +51,14 @@ const AppointmentBooking = () => {
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
                 <CircularProgress />
             </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Alert severity="error">
+                {error}
+            </Alert>
         );
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
     Box,
@@ -35,18 +35,7 @@ const ServiceEdit = () => {
         is_active: true
     });
 
-    useEffect(() => {
-        fetchCategories();
-        if (serviceId) {
-            fetchServiceData();
-        } else {
-            setLoading(false);
-            setError('Service ID is required');
-            navigate('/provider/dashboard');
-        }
-    }, [serviceId]);
-
-    const fetchServiceData = async () => {
+    const fetchServiceData = useCallback(async () => {
         try {
             const response = await services.getById(serviceId);
             setFormData({
@@ -63,7 +52,18 @@ const ServiceEdit = () => {
             setError('Failed to load service data');
             setLoading(false);
         }
-    };
+    }, [serviceId]);
+
+    useEffect(() => {
+        fetchCategories();
+        if (serviceId) {
+            fetchServiceData();
+        } else {
+            setLoading(false);
+            setError('Service ID is required');
+            navigate('/provider/dashboard');
+        }
+    }, [serviceId, fetchServiceData, navigate]);
 
     const fetchCategories = async () => {
         try {
