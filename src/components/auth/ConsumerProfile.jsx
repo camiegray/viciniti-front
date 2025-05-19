@@ -151,7 +151,7 @@ const ConsumerProfile = () => {
             setError('');
             setSuccess('');
             
-            const response = await api.put('/auth/profile/', {
+            await api.put('/auth/profile/', {
                 email: userData.email,
                 phone_number: userData.phone_number,
                 street_address: userData.street_address,
@@ -196,7 +196,7 @@ const ConsumerProfile = () => {
             setError('');
             setSuccess('');
             
-            const response = await api.put('/auth/password/', {
+            await api.put('/auth/password/', {
                 current_password: passwordData.current_password,
                 new_password: passwordData.new_password
             });

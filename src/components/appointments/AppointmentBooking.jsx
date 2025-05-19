@@ -36,16 +36,6 @@ const AppointmentBooking = () => {
         navigate('/appointments');
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            // ... existing code ...
-        } catch (err) {
-            setError(err.message);
-            // ... existing code ...
-        }
-    };
-
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">

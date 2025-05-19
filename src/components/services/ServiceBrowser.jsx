@@ -4,7 +4,6 @@ import {
     Box,
     Grid,
     Typography,
-    Button,
     TextField,
     MenuItem,
     FormControl,
@@ -15,20 +14,6 @@ import {
     Paper,
     Rating,
     Chip,
-    Stack,
-    IconButton,
-    Tooltip,
-    Divider,
-    List,
-    ListItem,
-    ListItemText,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    Collapse,
-    Card,
-    CardMedia,
-    CardContent,
-    CardActions,
 } from '@mui/material';
 import { services } from '../../services/api';
 
@@ -41,7 +26,6 @@ const ServiceBrowser = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('name');
-    const [expandedService, setExpandedService] = useState(null);
 
     useEffect(() => {
         fetchServices();
@@ -78,10 +62,6 @@ const ServiceBrowser = () => {
 
     const handleSortChange = (event) => {
         setSortBy(event.target.value);
-    };
-
-    const handleExpandClick = (serviceId) => {
-        setExpandedService(expandedService === serviceId ? null : serviceId);
     };
 
     const handleServiceClick = (serviceId) => {
