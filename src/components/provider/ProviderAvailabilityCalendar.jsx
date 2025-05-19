@@ -15,11 +15,8 @@ const ProviderAvailabilityCalendar = ({ onAvailabilityChange,
 
     // Initialize timeBlocks once when component mounts or initialTimeBlocks changes
     useEffect(() => {
-        if (initialTimeBlocks && Object.keys(initialTimeBlocks).length > 0) {
-            console.log("ProviderAvailabilityCalendar: Initializing timeBlocks from props", initialTimeBlocks);
-            setTimeBlocks(initialTimeBlocks);
-        }
-    }, []);  // Empty dependency array means this runs once on mount
+        setTimeBlocks(initialTimeBlocks);
+    }, [initialTimeBlocks]);
 
     // Update ref when timeBlocks changes
     useEffect(() => {
@@ -42,18 +39,18 @@ const ProviderAvailabilityCalendar = ({ onAvailabilityChange,
         
         // If we have a provider ID, save directly to the API
         if (providerId) {
-            saveAvailabilityToApi(providerId, newAvailability);
+            handleSave();
         }
-    }, [onAvailabilityChange, providerId]);
+    }, [onAvailabilityChange, providerId, handleSave]);
     
     // Function to save availability directly to API
-    const saveAvailabilityToApi = async (provId, availabilityData) => {
+    const handleSave = useCallback(async () => {
         try {
-            console.log("ProviderAvailabilityCalendar: Saving to API directly", availabilityData);
+            console.log("ProviderAvailabilityCalendar: Saving to API directly", timeBlocks);
             
             // Convert Date objects to ISO strings for API
             const apiData = {};
-            Object.entries(availabilityData).forEach(([dateStr, blocks]) => {
+            Object.entries(timeBlocks).forEach(([dateStr, blocks]) => {
                 if (blocks && blocks.length > 0) {
                     apiData[dateStr] = blocks.map(block => ({
                         id: block.id,
@@ -65,7 +62,7 @@ const ProviderAvailabilityCalendar = ({ onAvailabilityChange,
                 }
             });
             
-            const response = await availabilityApi.save(provId, apiData);
+            const response = await availabilityApi.save(providerId, apiData);
             console.log("ProviderAvailabilityCalendar: API save success", response.data);
             
             // Update state with API response
@@ -93,7 +90,7 @@ const ProviderAvailabilityCalendar = ({ onAvailabilityChange,
             console.error("Error saving availability directly:", err);
             setError("Failed to save availability. Please try again.");
         }
-    };
+    }, [providerId, timeBlocks]);
 
     useEffect(() => {
         // Skip first render to avoid conflicts with initialization

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
     Box,
-    Typography,
     Paper,
     Alert,
     CircularProgress,
@@ -19,7 +18,7 @@ const AppointmentBooking = () => {
 
     useEffect(() => {
         fetchService();
-    }, [serviceId]);
+    }, [fetchService]);
 
     const fetchService = async () => {
         if (!serviceId) return;
@@ -28,7 +27,7 @@ const AppointmentBooking = () => {
             setService(response.data);
             setLoading(false);
         } catch (err) {
-            setError('Failed to load service details');
+            setError(err.message);
             setLoading(false);
         }
     };
@@ -36,6 +35,16 @@ const AppointmentBooking = () => {
     const handleAppointmentBooked = () => {
         // Navigate to appointments list after successful booking
         navigate('/appointments');
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // ... existing code ...
+        } catch (err) {
+            setError(err.message);
+            // ... existing code ...
+        }
     };
 
     if (loading) {

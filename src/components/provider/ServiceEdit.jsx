@@ -13,7 +13,6 @@ import {
     Paper,
     Alert,
     CircularProgress,
-    SelectChangeEvent,
     ListSubheader
 } from '@mui/material';
 import { services } from '../../services/api';
